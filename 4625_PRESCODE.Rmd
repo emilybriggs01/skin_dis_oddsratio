@@ -1,0 +1,79 @@
+---
+title: "4625_PRESCODE"
+author: "Emily Briggs"
+date: "11/21/2022"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Code  
+  
+# Depression 
+```{r}
+#summarized frequency data
+depression.sum <- data.frame(
+  skin_dis = c(1, 1, 0, 0),
+  depression = c(1, 0, 1, 0),
+  count = c(357, 3176, 58, 1294))
+fit1 <- glm(depression ~ skin_dis, weights = count, data = depression.sum,
+                family = "binomial")
+summary(fit1)
+
+## compare with Wald chi-squared statistic
+(coef(fit1) / sqrt(diag(vcov(fit1))))^2 
+
+#crude OR and CI's 
+exp(cbind(OR = coef(fit1), confint(fit1)))
+
+#comparing to 2x2 table methods from note 5 (not logistic regression)
+library(epiR)
+epi.2by2(dat<-c(357, 3176, 58, 1294), method="case.control")
+```
+  
+# Anxiety  
+```{r}
+#summarized frequency data
+anxiety.sum <- data.frame(
+  skin_dis2 = c(1, 1, 0, 0),
+  anxiety = c(1, 0, 1, 0),
+  count2 = c(607, 2921, 150, 1200))
+fit2 <- glm(anxiety ~ skin_dis2, weights = count2, data = anxiety.sum, 
+            family = "binomial")
+summary(fit2)
+
+## compare with Wald chi-squared statistic
+(coef(fit2) / sqrt(diag(vcov(fit2))))^2
+
+#crude OR and CI's 
+exp(cbind(OR = coef(fit2), confint(fit2)))
+
+#comparing to 2x2 table methods from note 5 (not logistic regression)
+epi.2by2(dat<-c(607, 2921, 150, 1200), method="case.control")
+```
+
+# Suicidal Ideation  
+```{r}
+#summarized frequency data
+suic.sum <- data.frame(
+  skin_dis3 = c(1, 1, 0, 0),
+  suicide = c(1, 0, 1, 0),
+  count3 = c(451, 3184, 88, 1271))
+fit3 <- glm(suicide ~ skin_dis3, weights = count3, data = suic.sum,
+                family = "binomial")
+summary(fit3)
+
+## compare with Wald chi-squared statistic
+(coef(fit3) / sqrt(diag(vcov(fit3))))^2 
+
+#crude OR and CI's 
+exp(cbind(OR = coef(fit3), confint(fit3)))
+
+#comparing to 2x2 table methods from note 5 (not logistic regression)
+epi.2by2(dat<-c(451, 3184, 88, 1271), method="case.control")
+```
+
